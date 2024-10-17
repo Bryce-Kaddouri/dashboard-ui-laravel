@@ -65,3 +65,42 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 # dashboard-ui-laravel
+
+
+--- start the project ---
+
+1. Install the dependencies:
+
+```bash
+composer install
+```
+
+2. Run the project:
+
+Because we are using sail to run the project, we need to run the following command to start the project:
+
+```bash
+./vendor/bin/sail up -d
+```
+
+4. install npm dependencies:
+```bash
+./vendor/bin/sail npm install
+```
+
+5. build frontend:
+```bash
+./vendor/bin/sail npm run build
+```
+
+6. access the project:
+
+Go to http://localhost
+
+
+
+
+
+
+
+
