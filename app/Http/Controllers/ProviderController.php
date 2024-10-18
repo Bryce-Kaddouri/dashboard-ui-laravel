@@ -27,7 +27,7 @@ class ProviderController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Provider/Create');
     }
 
     /**
@@ -35,7 +35,8 @@ class ProviderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $provider = Provider::create($request->all());
+        return redirect()->route('provider.index');
     }
 
     /**
@@ -43,7 +44,9 @@ class ProviderController extends Controller
      */
     public function show(Provider $provider)
     {
-        //
+        return Inertia::render('Provider/Show', [
+            'provider' => $provider,
+        ]);
     }
 
     /**
@@ -51,7 +54,9 @@ class ProviderController extends Controller
      */
     public function edit(Provider $provider)
     {
-        //
+        return Inertia::render('Provider/Edit', [
+            'provider' => $provider,
+        ]);
     }
 
     /**
@@ -59,7 +64,8 @@ class ProviderController extends Controller
      */
     public function update(Request $request, Provider $provider)
     {
-        //
+        $provider->update($request->all());
+        return redirect()->route('provider.index');
     }
 
     /**
@@ -67,6 +73,7 @@ class ProviderController extends Controller
      */
     public function destroy(Provider $provider)
     {
-        //
+        $provider->delete();
+        return redirect()->route('provider.index');
     }
 }
