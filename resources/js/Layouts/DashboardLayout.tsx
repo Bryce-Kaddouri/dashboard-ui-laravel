@@ -1,5 +1,6 @@
 import Link from "next/link"
 import * as React from "react"
+import Dropdown from '@/Components/Dropdown';
 
 import {
   Bell,
@@ -44,6 +45,9 @@ import {
     TooltipContent,
     TooltipTrigger,
   } from "@/Components/ui/tooltip"
+import NoData from "@/Components/NoData"
+import { usePage } from "@inertiajs/react";
+import { ConfirmLogoutDialog } from "@/Components/ConfirmLogoutDialog";
 
 const links = [
   { href: "/dashboard", label: "Dashboard", icon: <Home className="h-4 w-4" /> },
@@ -54,14 +58,28 @@ const links = [
   { href: "/charts", label: "Charts", icon: <BarChart className="h-4 w-4" /> },
 ];
 
-export function DashboardLayout() {
+export function DashboardLayout({pageTitle, children }: { pageTitle: string, children: React.ReactNode }) {
   const currentPath = window.location.pathname; // Get the current path
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   const toggleSidebar = () => setIsCollapsed(!isCollapsed)
+  const user = usePage().props.auth.user;
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+
+  const handleLogoutClick = (event: React.MouseEvent) => {
+    event.preventDefault(); // Prevent the dropdown from closing
+    setIsDialogOpen(true); // Open the confirmation dialog
+  };
+
+  const handleConfirmLogout = () => {
+    window.location.href = route('logout'); // Redirect to logout
+  };
+
+  console.log(isDialogOpen)
+
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <div className={`border-r bg-muted/40 transition-width duration-300 ${isCollapsed ? 'w-16' : 'w-56'} md:block`}>
+      <div className={`border-r bg-muted/40 transition-width duration-300 ${isCollapsed ? 'w-20' : ''} md:block`}>
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
@@ -144,33 +162,28 @@ export function DashboardLayout() {
                 <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => window.location.href = route('profile.edit')}>Profile</DropdownMenuItem>
               <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <ConfirmLogoutDialog 
+              children={<DropdownMenuItem onClick={handleLogoutClick}>Logout</DropdownMenuItem>}
+                open={isDialogOpen} 
+                onConfirm={handleConfirmLogout} 
+                onCancel={() => setIsDialogOpen(false)} 
+              />
             </DropdownMenuContent>
+           
           </DropdownMenu>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
           <div className="flex items-center">
-            <h1 className="text-lg font-semibold md:text-2xl">Inventory</h1>
+            <h1 className="text-lg font-semibold md:text-2xl">{pageTitle}</h1>
           </div>
-          <div
-            className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm" x-chunk="dashboard-02-chunk-1"
-          >
-            <div className="flex flex-col items-center gap-1 text-center">
-              <h3 className="text-2xl font-bold tracking-tight">
-                You have no products
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                You can start selling as soon as you add a product.
-              </p>
-              <Button className="mt-4">Add Product</Button>
-            </div>
-          </div>
+          
+            {children}
+         
         </main>
       </div>
     </div>

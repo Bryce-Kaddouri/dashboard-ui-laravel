@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import {DashboardLayout} from '@/Layouts/DashboardLayout';
+import NoData from '@/Components/NoData';
 export default function Dashboard() {
     return (
         /* <AuthenticatedLayout
@@ -22,7 +23,8 @@ export default function Dashboard() {
                 </div>
             </div>
         </AuthenticatedLayout> */
-        <DashboardLayout >
+        <DashboardLayout pageTitle="Products">
+            <NoData title="No Products" description="You can start selling as soon as you add a product." buttonText="Add Product" onClick={() => window.location.href = '/product/new'} />
         </DashboardLayout>
     );
 }
