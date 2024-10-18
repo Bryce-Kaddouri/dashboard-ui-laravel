@@ -13,6 +13,9 @@ const alertVariants = cva(
         destructive_dismissible: "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive flex justify-between items-center",
         destructive:
           "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive",
+        active: "border-green-500 text-green-500 dark:border-green-500 [&>svg]:text-green-500",
+        warning: "border-yellow-500 text-yellow-500 dark:border-yellow-500 [&>svg]:text-yellow-500",
+        error: "border-red-500 text-red-500 dark:border-red-500 [&>svg]:text-red-500",
       },
     },
     defaultVariants: {
