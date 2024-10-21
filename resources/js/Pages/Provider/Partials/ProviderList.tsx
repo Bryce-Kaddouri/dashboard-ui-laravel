@@ -62,12 +62,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/Components/ui/tooltip"
-import { Pagination } from "@/types"
+import { Pagination, Provider } from "@/types"
 import { ConfirmDeleteProviderDialog } from "./ConfirmDeleteProviderDialog"
 import { useState, FormEventHandler } from "react"
 import { useForm } from '@inertiajs/react';
 
-export function ProviderList({ pagination }: { pagination: Pagination }) {
+export function ProviderList({ pagination }: { pagination: Pagination<Provider> }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleDeleteClick = (event: React.MouseEvent) => {
     event.preventDefault(); // Prevent the dropdown from closing

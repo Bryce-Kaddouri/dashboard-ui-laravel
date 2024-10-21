@@ -7,7 +7,7 @@ import { ProviderList } from './Partials/ProviderList';
 import { Provider, Pagination, Product } from '@/types';
 
 interface Props extends PageProps {
-    pagination: Pagination;
+    pagination: Pagination<Provider>;
     query: string;
 }
 

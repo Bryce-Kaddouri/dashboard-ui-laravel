@@ -3,17 +3,16 @@ import { Head } from '@inertiajs/react';
 import {DashboardLayout} from '@/Layouts/DashboardLayout';
 import NoData from '@/Components/NoData';
 import { PageProps } from '@/types';
-import { ProviderList } from './Partials/ProviderList';
 import { Provider, Pagination, Product } from '@/types';
-import { CreateProviderForm } from './Partials/CreateProviderForm';
+import { ProductList } from './Partials/ProductList';
 
 
-export default function Create() {  
+export default function Index({ products }: { products: Product[] }) {  
     return (
     
-        <DashboardLayout pageTitle="Create Provider">
+        <DashboardLayout pageTitle="Products">
             
-            <CreateProviderForm />
+            <ProductList products={products} />
         </DashboardLayout>
     );
 }
