@@ -12,6 +12,8 @@ class ProviderSeeder extends Seeder
      */
     public function run(): void
     {
-        Provider::factory()->count(10)->create(); // Create 10 providers using the factory
+        Provider::factory()->count(10)->create([
+            'image' => 'https://placehold.co/400x400.png', // Set a default image for each provider
+        ]); // Create 10 providers using the factory
     }
 }

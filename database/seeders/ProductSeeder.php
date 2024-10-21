@@ -20,7 +20,9 @@ class ProductSeeder extends Seeder
         Product::factory()
             ->count(10)
             ->recycle($providers) // Recycle the providers
-            ->create()
+            ->create([
+                'image' => 'https://placehold.co/400x400.png', // Set a default image for each product
+            ])
             ->each(function ($product) use ($providers) {
                 // Attach random providers to each product
                 $randomProviders = $providers->random(rand(1, 3))->pluck('id');

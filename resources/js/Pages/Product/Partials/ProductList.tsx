@@ -113,11 +113,11 @@ export function ProductList({ products }: { products: Product[] }) {
                   </span>
                 </Button>
                 <Button size="sm" className="h-8 gap-1" onClick={() => {
-                  window.location.href = route('providers.create');
+                  window.location.href = route('products.create');
                 }}>
                   <PlusCircle className="h-3.5 w-3.5" />
                   <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Add Provider
+                    Add Product
                   </span>
                 </Button>
                 
