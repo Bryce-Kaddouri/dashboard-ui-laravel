@@ -13,16 +13,32 @@ import { Provider } from "@/types";
 import { Trash2Icon } from "lucide-react";
 import Link from "next/link";
 import { FormEventHandler } from "react";
+import { useForm } from "@inertiajs/react";
 
 interface ConfirmLogoutDialogProps {
     open: boolean;
-    onConfirm: FormEventHandler;
     onCancel: () => void;
     children: React.ReactNode;
     provider: Provider;
 }
 
-export function ConfirmDeleteProviderDialog({ open, onConfirm, onCancel, children, provider }: ConfirmLogoutDialogProps) {
+export function ConfirmDeleteProviderDialog({ open, onCancel, children, provider }: ConfirmLogoutDialogProps) {
+
+    const { data, setData, delete: deleteForm, errors, processing, recentlySuccessful } =
+        useForm({
+           id: provider.id
+        });
+
+    const deleteSubmit: FormEventHandler = (e) => {
+        e.preventDefault();
+        console.log(data);
+        if (data.id !== -1) {
+          deleteForm(route('providers.update', data.id));
+        }
+        onCancel();
+
+       
+    };
     return (
         <Dialog open={open} onOpenChange={onCancel}>
             <DialogTrigger asChild>
@@ -42,7 +58,7 @@ export function ConfirmDeleteProviderDialog({ open, onConfirm, onCancel, childre
                 <DialogFooter> 
                     <Button variant="ghost" onClick={onCancel}>Cancel</Button>
                     
-                        <Button type="submit" variant="destructive" onClick={onConfirm}>Confirm</Button>
+                        <Button type="submit" variant="destructive" onClick={deleteSubmit}>Confirm</Button>
                    
                 </DialogFooter>
             </DialogContent>
