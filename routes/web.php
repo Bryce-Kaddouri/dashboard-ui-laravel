@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProviderController;
 use Illuminate\Foundation\Application;
@@ -25,6 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('providers', ProviderController::class);
+
+    Route::resource('products', ProductController::class);
 });
 
 

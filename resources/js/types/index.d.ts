@@ -13,9 +13,9 @@ export type PageProps<
     };
 };
 
-export interface Pagination {
+export interface Pagination<T> {
     current_page: number;
-    data: Provider[];
+    data: T[];
     first_page_url: string;
     from: number;
     last_page: number;
@@ -50,4 +50,5 @@ export interface Product {
     name: string;
     description: string;
     updated_at: string;
+    providers: Provider[];
 }
