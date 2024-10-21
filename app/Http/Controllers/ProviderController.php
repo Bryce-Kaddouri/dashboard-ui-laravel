@@ -73,8 +73,14 @@ class ProviderController extends Controller
      */
     public function update(Request $request, Provider $provider)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:providers,email,' . $provider->id,
+            'phone' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+        ]);
         $provider->update($request->all());
-        return redirect()->route('provider.index');
+        return redirect()->route('providers.index')->with('success', 'Provider updated successfully');
     }
 
     /**
