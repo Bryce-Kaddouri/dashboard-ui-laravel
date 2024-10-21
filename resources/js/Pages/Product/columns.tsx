@@ -27,9 +27,17 @@ export const columns: ColumnDef<Product>[] = [
     header: ({ column }) => {
         return (
             <DataTableColumnHeader column={column} title="ID" />
-
         )
       },
+
+    
+  },
+  {
+    accessorKey: "image",
+    header: "Image",
+      cell: ({ row }) => {
+        return (<img src={row.original.image} alt={row.original.name} className="w-16 h-16 rounded-sm" />)
+    }
   },
   {
     accessorKey: "name",

@@ -49,6 +49,7 @@ export interface Product {
     id: number;
     name: string;
     description: string;
+    image: string;
     updated_at: string;
     providers: Provider[];
 }
