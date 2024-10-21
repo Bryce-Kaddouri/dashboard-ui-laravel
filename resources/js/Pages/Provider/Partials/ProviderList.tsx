@@ -172,7 +172,9 @@ export function ProviderList({ pagination }: { pagination: Pagination }) {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => {
+                                window.location.href = route('providers.show', { id: provider.id });
+                              }}>
                                 <Eye className="h-4 w-4 mr-2" />
                                 Show
                               </DropdownMenuItem>
