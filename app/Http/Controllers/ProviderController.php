@@ -35,8 +35,17 @@ class ProviderController extends Controller
      */
     public function store(Request $request)
     {
-        $provider = Provider::create($request->all());
-        return redirect()->route('provider.index');
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:providers,email',
+            'phone' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+        ]);
+        Provider::create($request->all());
+        
+        
+        return redirect()->route('providers.index')->with('success', 'Provider created successfully');
     }
 
     /**

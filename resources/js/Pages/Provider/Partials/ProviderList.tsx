@@ -72,10 +72,7 @@ export function ProviderList({ pagination }: { pagination: Pagination }) {
               <TabsList>
                 <TabsTrigger value="all">All</TabsTrigger>
                 <TabsTrigger value="active">Active</TabsTrigger>
-                <TabsTrigger value="draft">Draft</TabsTrigger>
-                <TabsTrigger value="archived" className="hidden sm:flex">
-                  Archived
-                </TabsTrigger>
+                <TabsTrigger value="inactive">Inactive</TabsTrigger>
               </TabsList>
               <div className="ml-auto flex items-center gap-2">
                 <DropdownMenu>
@@ -110,7 +107,7 @@ export function ProviderList({ pagination }: { pagination: Pagination }) {
                 }}>
                   <PlusCircle className="h-3.5 w-3.5" />
                   <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Add Product
+                    Add Provider
                   </span>
                 </Button>
                 
@@ -153,11 +150,11 @@ export function ProviderList({ pagination }: { pagination: Pagination }) {
                             width="64"
                           />
                         </TableCell>
-                        <TableCell className="font-medium">Laser Lemonade Machine</TableCell>
+                        <TableCell className="font-medium">{provider.name}</TableCell>
                         <TableCell>
                         <Badge variant="active">Active</Badge>
                         </TableCell>
-                        <TableCell>+1 (555) 123-4567</TableCell>
+                        <TableCell>{provider.phone}</TableCell>
                         <TableCell>
                         <Badge className="py-2" variant="outline">{provider.products.length}</Badge>
                         </TableCell>

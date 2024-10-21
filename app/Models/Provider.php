@@ -10,8 +10,16 @@ class Provider extends Model
     /** @use HasFactory<\Database\Factories\ProviderFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'address',
+    ];
+
     public function products()
     {
         return $this->belongsToMany(Product::class)->withTimestamps();
     }
+
 }
