@@ -42,6 +42,7 @@ class ProviderController extends Controller
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
         ]);
+        
         Provider::create($request->all());
         
         
@@ -89,6 +90,6 @@ class ProviderController extends Controller
     public function destroy(Provider $provider)
     {
         $provider->delete();
-        return redirect()->route('provider.index');
+        return redirect()->route('providers.index')->with('success', 'Provider deleted successfully');
     }
 }

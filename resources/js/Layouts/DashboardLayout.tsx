@@ -103,7 +103,7 @@ export function DashboardLayout({pageTitle, children }: { pageTitle: string, chi
                 <Link
                   key={link.label}
                   href={link.href}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${currentPath === link.href ? 'rounded-lg bg-muted' : ''}`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${currentPath.match(new RegExp(`^${link.href}`)) ? 'rounded-lg bg-muted' : ''}`}
                 >
                   {link.icon}
                   {!isCollapsed && link.label}
@@ -134,7 +134,7 @@ export function DashboardLayout({pageTitle, children }: { pageTitle: string, chi
                   <Link
                     key={link.label}
                     href={link.href}
-                    className={`${currentPath === link.href ? 'flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary' : 'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'}`}
+                    className={`${currentPath.match(new RegExp(`^${link.href}`)) ? 'flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary' : 'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'}`}
                   >
                     {link.icon}
                     {!isCollapsed && link.label}
