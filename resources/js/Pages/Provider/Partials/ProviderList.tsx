@@ -176,7 +176,9 @@ export function ProviderList({ pagination }: { pagination: Pagination }) {
                                 <Eye className="h-4 w-4 mr-2" />
                                 Show
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => {
+                                window.location.href = route('providers.edit', { id: provider.id });
+                              }}>
                                 <Edit className="h-4 w-4 mr-2" />
                                 Edit
                               </DropdownMenuItem>
