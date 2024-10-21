@@ -63,8 +63,17 @@ import {
   TooltipTrigger,
 } from "@/Components/ui/tooltip"
 import { Pagination } from "@/types"
+import { ConfirmDeleteProviderDialog } from "./ConfirmDeleteProviderDialog"
+import { useState, FormEventHandler } from "react"
+import { useForm } from '@inertiajs/react';
 
 export function ProviderList({ pagination }: { pagination: Pagination }) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const handleDeleteClick = (event: React.MouseEvent) => {
+    event.preventDefault(); // Prevent the dropdown from closing
+    setIsDialogOpen(true); // Open the confirmation dialog
+  };
+  
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           <Tabs defaultValue="all">
@@ -184,6 +193,15 @@ export function ProviderList({ pagination }: { pagination: Pagination }) {
                                 <Edit className="h-4 w-4 mr-2" />
                                 Edit
                               </DropdownMenuItem>
+                              <ConfirmDeleteProviderDialog 
+                    children={<DropdownMenuItem onClick={handleDeleteClick}>
+                      <Trash className="h-4 w-4 mr-2" />
+                      Delete
+                    </DropdownMenuItem>}
+                    open={isDialogOpen}
+                    onCancel={() => setIsDialogOpen(false)}
+                    provider={provider} 
+                      />
                               <DropdownMenuItem>
                                 <Trash className="h-4 w-4 mr-2" />
                                 Delete

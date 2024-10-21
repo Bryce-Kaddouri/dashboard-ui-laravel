@@ -26,14 +26,6 @@ export function ShowProviderForm() {
             phone: provider.phone,
             address: provider.address
         });
-
-    const deleteSubmit: FormEventHandler = (e) => {
-        e.preventDefault();
-        console.log(data);
-
-        deleteForm(route('providers.update', provider.id));
-    };
-
     
 
       const handleDeleteClick = (event: React.MouseEvent) => {
@@ -114,8 +106,7 @@ export function ShowProviderForm() {
                     </Button>}
                     open={isDialogOpen}
                     onCancel={() => setIsDialogOpen(false)}
-                    provider={provider} 
-                    onConfirm={deleteSubmit}              />
+                    provider={provider}          />
                     <form action={route('providers.index')}>
                         <Button variant="outline" type="submit">
                             <ChevronLeft className="h-4 w-4" />
