@@ -73,7 +73,12 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        $product = Product::with('providers')->find($product->id);
+        $providers = Provider::all();
+        return Inertia::render('Product/Edit', [
+            'product' => $product,
+            'providers' => $providers,
+        ]);
     }
 
     /**
@@ -81,7 +86,34 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,blob|max:2048',
+        ]);
+
+       
+
+        if ($request->hasFile('image')) {
+            // delete old image
+            if ($product->image) {
+                unlink(public_path($product->image));
+            }
+            // upload new image
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images/products'), $imageName);
+            $product->image = 'images/products/'.$imageName;
+        }
+
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->save();
+
+        // Sync providers to product
+        $providers = $request->input('providers', []);
+        $product->providers()->sync(array_column($providers, 'id'));
+
+        return redirect()->route('products.index');
     }
 
     /**
