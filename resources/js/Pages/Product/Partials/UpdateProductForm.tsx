@@ -26,12 +26,13 @@ export function UpdateProductForm({ providers }: { providers: Provider[] }) {
     // providers variable, empty array
     const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
+  const [imageURL, setImageURL] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            image: null as any,
+            image: null as File | null,
             name: product.name,
             description: product.description,
             providers: product.providers,
@@ -51,18 +52,10 @@ export function UpdateProductForm({ providers }: { providers: Provider[] }) {
     
 
     console.log(product.image);
-
-    // function to encode image to base64
-    const encodeImageToBase64 = (image: File) => {
-        console.log('encodeImageToBase64');
-        console.log(image);
-        const reader = new FileReader();
-        console.log('reader');
-        console.log(reader);
-        reader.readAsDataURL(image);
-        console.log('reader.readAsDataURL');
-        console.log(reader.readAsDataURL);
-        return reader.result as string;
+    const onChange = (e: any) => {
+        // check if image is changed
+       console.log('change');
+       console.log(data);
     }
 
     
@@ -71,38 +64,27 @@ export function UpdateProductForm({ providers }: { providers: Provider[] }) {
     
     return (
        
-        <form onSubmit={submit} className="space-y-8" method="post" encType="multipart/form-data">
-             
-
-
+        <form onSubmit={submit} className="space-y-8" method="post" encType="multipart/form-data" onChange={onChange}>
                 <div>
                     <InputLabel htmlFor="image" value="Image" />
                     <Input id="image" type="file" onChange={(e) => {
-                        e.preventDefault();
                         console.log('change');
-                        console.log(e.target.value);
-                        const file = e.target.files?.item(0);
-                        try {
-                            if (file) {
-                                const base64Image = encodeImageToBase64(file);
-                                console.log('base64Image');
-                                console.log(base64Image);
-                                console.log('file');
-                                console.log(file);
-
-                                
-                                setData('image', file);
-                                console.log(data.image);
-                            }
-                        } catch (error) {
-                            console.error("Error creating image URL:", error);
-                        }
+                        const files = e.target.files;
+                        if (!files) return;
+                        // get the first file from the list
+                        const file = files.item(0);
+                        if (!file) return;
+                        setImageURL(URL.createObjectURL(file));
+                        setData('image', file);
+                        
+                        
+                        
                     }} />
                     {/* <Input id="image" type="file" onChange={(e) => changeURL(e.target.files)}/> */}
                     
                     {/* preview image */}
-                    {data.image ? (
-                        <img src={data.image.name} alt="Uploaded Image" width={100} height={100} />
+                    {imageURL ? (
+                        <img src={imageURL} alt="Uploaded Image" width={100} height={100} />
                     ) : product.image ? (
                         <img src={`${window.location.origin}/${product.image}`} alt="Product Image" width={100} height={100} />
                     ) : null}
@@ -237,7 +219,7 @@ export function UpdateProductForm({ providers }: { providers: Provider[] }) {
                    
                     <Button type="submit">Submit</Button>
                    
-                    <form action={route('providers.index')}>
+                    <form action={route('products.index')}>
                         <Button variant="outline" type="submit">
                             <ChevronLeft className="h-4 w-4" />
                             Back to list

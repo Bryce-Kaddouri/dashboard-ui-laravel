@@ -86,11 +86,10 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        dd($request->all());
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,blob|max:2048',
         ]);
 
        
