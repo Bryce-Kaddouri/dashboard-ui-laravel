@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PriceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProviderController;
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('providers', ProviderController::class);
 
     Route::resource('products', ProductController::class);
+    Route::resource('prices', PriceController::class);
 });
 
 

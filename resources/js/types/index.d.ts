@@ -53,3 +53,12 @@ export interface Product {
     updated_at: string;
     providers: Provider[];
 }
+
+export interface Price {
+    id: number;
+    product: Product;
+    provider: Provider;
+    effective_date: Date;
+    price: number;
+    updated_at: Date;
+}
