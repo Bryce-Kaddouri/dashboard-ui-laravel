@@ -19,4 +19,11 @@ class Price extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    protected $fillable = [
+        'price',
+        'effective_date',
+        'provider_id',
+        'product_id',
+    ];
 }
