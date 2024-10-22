@@ -86,7 +86,6 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-
         dd($request->all());
         $request->validate([
             'name' => 'required',
@@ -97,6 +96,11 @@ class ProductController extends Controller
        
 
         if ($request->hasFile('image')) {
+            // delete old image
+            if ($product->image) {
+                unlink(public_path($product->image));
+            }
+            // upload new image
             $imageName = time().'.'.$request->image->extension();
             $request->image->move(public_path('images/products'), $imageName);
             $product->image = 'images/products/'.$imageName;

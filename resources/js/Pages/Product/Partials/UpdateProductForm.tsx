@@ -23,19 +23,15 @@ import { Card } from "@/Components/ui/card";
 export function UpdateProductForm({ providers }: { providers: Provider[] }) {
     const product = usePage().props.product as Product;
     console.log(product);
-
-    const [imageURL, setImageURL] = useState<string | null>(null);
     // providers variable, empty array
     const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handleUploadComplete = (url: string) => {
-    setImageURL(url);
-  };
+  
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            image: null as File | null,
+            image: null as any,
             name: product.name,
             description: product.description,
             providers: product.providers,
@@ -44,27 +40,34 @@ export function UpdateProductForm({ providers }: { providers: Provider[] }) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        console.log('submit');
+        console.log(e);
         console.log(data);
 
         patch(route('products.update', product.id));
     };
 
     // function change url to set with temp url
-    const changeURL = (files:FileList | null) => {
-        if (!files) return;
-        // get the first file from the list
-        const file = files.item(0);
-        if (!file) return;
-        const imageUrl = URL.createObjectURL(file);
-        setImageURL(imageUrl);
-        setData('image', file);
-        console.log(file);
-        // log form data
-        console.log('form data');
-        console.log(data);
-    }
+    
 
     console.log(product.image);
+
+    // function to encode image to base64
+    const encodeImageToBase64 = (image: File) => {
+        console.log('encodeImageToBase64');
+        console.log(image);
+        const reader = new FileReader();
+        console.log('reader');
+        console.log(reader);
+        reader.readAsDataURL(image);
+        console.log('reader.readAsDataURL');
+        console.log(reader.readAsDataURL);
+        return reader.result as string;
+    }
+
+    
+
+   
     
     return (
        
@@ -74,11 +77,32 @@ export function UpdateProductForm({ providers }: { providers: Provider[] }) {
 
                 <div>
                     <InputLabel htmlFor="image" value="Image" />
-                    <Input id="image" type="file" onChange={(e) => changeURL(e.target.files)}/>
+                    <Input id="image" type="file" onChange={(e) => {
+                        e.preventDefault();
+                        console.log('change');
+                        console.log(e.target.value);
+                        const file = e.target.files?.item(0);
+                        try {
+                            if (file) {
+                                const base64Image = encodeImageToBase64(file);
+                                console.log('base64Image');
+                                console.log(base64Image);
+                                console.log('file');
+                                console.log(file);
+
+                                
+                                setData('image', file);
+                                console.log(data.image);
+                            }
+                        } catch (error) {
+                            console.error("Error creating image URL:", error);
+                        }
+                    }} />
+                    {/* <Input id="image" type="file" onChange={(e) => changeURL(e.target.files)}/> */}
                     
                     {/* preview image */}
-                    {imageURL ? (
-                        <img src={imageURL} alt="Uploaded Image" width={100} height={100} />
+                    {data.image ? (
+                        <img src={data.image.name} alt="Uploaded Image" width={100} height={100} />
                     ) : product.image ? (
                         <img src={`${window.location.origin}/${product.image}`} alt="Product Image" width={100} height={100} />
                     ) : null}
