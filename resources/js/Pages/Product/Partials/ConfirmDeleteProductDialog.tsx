@@ -49,9 +49,9 @@ export function ConfirmDeleteProductDialog({ open, onCancel, children, product }
                     <div className="flex items-center justify-center p-4">
                         <Trash2Icon className="h-20 w-20 text-red-500" />
                     </div>
-                    <DialogTitle className="text-center pb-4">Are you sure you want to delete this provider?</DialogTitle>
+                    <DialogTitle className="text-center pb-4">Are you sure you want to delete this product?</DialogTitle>
                     <DialogDescription className="text-center pb-4">
-                        This action cannot be undone and all the data associated with this provider will be deleted.
+                        This action cannot be undone and all the data associated with this product will be deleted.
                     </DialogDescription>
                     
                 </DialogHeader>
