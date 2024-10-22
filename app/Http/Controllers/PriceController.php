@@ -72,7 +72,18 @@ class PriceController extends Controller
      */
     public function edit(Price $price)
     {
-        //
+        $providers = Provider::with('products')->get();
+        $price = Price::with('provider', 'product')->find($price->id);
+
+        // Eager load products for the selected provider
+        if ($price->provider) {
+            $price->provider->load('products');
+        }
+
+        return Inertia::render('Price/Edit', [
+            'price' => $price,
+            'providers' => $providers,
+        ]);
     }
 
     /**
