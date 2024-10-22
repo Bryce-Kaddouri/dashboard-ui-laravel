@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Price;
+use App\Models\Provider;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -24,7 +25,10 @@ class PriceController extends Controller
      */
     public function create()
     {
-        //
+        $providers = Provider::with('products')->get();
+        return Inertia::render('Price/Create', [
+            'providers' => $providers,
+        ]);
     }
 
     /**
@@ -32,7 +36,27 @@ class PriceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       
+        $request->validate([
+            'price' => 'required|numeric|min:0',
+            'effective_date' => 'required|date',
+            'provider' => 'required',
+            'product' => 'required',
+        ]);
+
+        
+        
+        $price = Price::create([
+            'price' => $request->price,
+            'effective_date' => \Carbon\Carbon::parse($request->effective_date)->format('Y-m-d'),
+            'provider_id' => $request->provider['id'],
+            'product_id' => $request->product['id'],
+        ]);
+
+        $price->save();
+        
+        
+        return redirect()->route('prices.index')->with('success', 'Price created successfully');
     }
 
     /**
