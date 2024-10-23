@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Price;
 use App\Models\Provider;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+
 use Inertia\Inertia;
+use App\Http\Requests\PriceUpdateRequest;
+
 
 class PriceController extends Controller
 {
@@ -44,6 +49,7 @@ class PriceController extends Controller
             'product' => 'required',
         ]);
 
+
         
         
         $price = Price::create([
@@ -54,9 +60,10 @@ class PriceController extends Controller
         ]);
 
         $price->save();
+
+        return Redirect::route('prices.index');
         
         
-        return redirect()->route('prices.index')->with('success', 'Price created successfully');
     }
 
     /**
@@ -89,9 +96,18 @@ class PriceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Price $price)
+    public function update(PriceUpdateRequest $request, Price $price): RedirectResponse
     {
-        //
+         $request->validated();
+       
+
+        $price->update([
+            'price' => $request->price,
+            'effective_date' => \Carbon\Carbon::parse($request->effective_date)->format('Y-m-d'),
+            'provider_id' => $request->provider_id,
+            'product_id' => $request->product_id,
+        ]);
+        return redirect()->route('prices.index')->with('success', 'Price updated successfully');
     }
 
     /**

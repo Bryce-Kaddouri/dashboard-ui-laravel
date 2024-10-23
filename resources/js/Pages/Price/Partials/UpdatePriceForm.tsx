@@ -59,8 +59,8 @@ export function UpdatePriceForm({ providers}: { providers: Provider[] }) {
         useForm({
             price: Number(price.price),
             effective_date: price.effective_date,
-            provider: price.provider,
-            product: price.product,
+            provider_id: price.provider.id,
+            product_id: price.product.id,
         });
 
     const submit: FormEventHandler = (e) => {
@@ -71,10 +71,10 @@ export function UpdatePriceForm({ providers}: { providers: Provider[] }) {
        
 
 
-        // patch(route('prices.update', price.id)); 
+        patch(route('prices.update', price.id)); 
     };
     console.log("data")
-    console.log(data.provider)
+    console.log(data.provider_id)
 
     return (
         <form onSubmit={submit} className="space-y-8" method="post" onChange={(e) => console.log(e)}>
@@ -109,7 +109,7 @@ export function UpdatePriceForm({ providers}: { providers: Provider[] }) {
                             aria-expanded={providerOpen}
                             className="justify-between w-full"
                         >
-                            {data.provider ? data.provider.name : "Select provider..."}
+                            {data.provider_id ? providers.find(provider => provider.id === data.provider_id)?.name : "Select provider..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                     </PopoverTrigger>
@@ -126,7 +126,7 @@ export function UpdatePriceForm({ providers}: { providers: Provider[] }) {
                                             key={provider.id}
                                             value={provider.name}
                                             onSelect={(currentValue) => {
-                                                setData('provider', provider)
+                                                setData('provider_id', provider.id)
                                                 setProviderOpen(false) // Close provider popover
                                                 console.log()
                                             }}
@@ -134,7 +134,7 @@ export function UpdatePriceForm({ providers}: { providers: Provider[] }) {
                                             <Check
                                                 className={cn(
                                                     "mr-2 h-4 w-4",
-                                                    data.provider?.id === provider.id ? "opacity-100" : "opacity-0"
+                                                    data.provider_id === provider.id ? "opacity-100" : "opacity-0"
                                                 )}
                                             />
                                             {provider.name}
@@ -145,6 +145,7 @@ export function UpdatePriceForm({ providers}: { providers: Provider[] }) {
                         </Command>
                     </PopoverContent>
                 </Popover>
+                <InputError className="mt-2" message={errors.provider_id} />
             </div>
             <div className="w-full">
                 <Popover open={productOpen} onOpenChange={setProductOpen}>
@@ -154,9 +155,9 @@ export function UpdatePriceForm({ providers}: { providers: Provider[] }) {
                             role="combobox"
                             aria-expanded={productOpen}
                             className="justify-between w-full"
-                            disabled={!data.provider} // Disable if provider is not selected
+                            disabled={!data.provider_id} // Disable if provider is not selected
                         >
-                            {data.product ? data.product.name : "Select product..."}
+                            {data.product_id ? providers.find(provider => provider.id === data.provider_id)?.products.find(product => product.id === data.product_id)?.name : "Select product..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                     </PopoverTrigger>
@@ -164,25 +165,25 @@ export function UpdatePriceForm({ providers}: { providers: Provider[] }) {
                         <Command>
                             <CommandInput 
                                 placeholder="Search product..." 
-                                disabled={!data.provider} // Disable input if provider is not selected
+                                disabled={!data.provider_id} // Disable input if provider is not selected
                             />
                             <CommandList>
                                 <CommandEmpty>No product found.</CommandEmpty>
                                 <CommandGroup>
-                                    {data.provider?.products.map((product) => (
+                                    {providers.find(provider => provider.id === data.provider_id)?.products.map((product) => (
                                         <CommandItem
                                             key={product.id}
                                             value={product.name}
                                             onSelect={(currentValue) => {
                                                 console.log(currentValue)
-                                                setData('product', product)
+                                                setData('product_id', product.id)
                                                 setProductOpen(false) // Close product popover
                                             }}
                                         >
                                             <Check
                                                 className={cn(
                                                     "mr-2 h-4 w-4",
-                                                    data.product?.id === product.id ? "opacity-100" : "opacity-0"
+                                                    data.product_id === product.id ? "opacity-100" : "opacity-0"
                                                 )}
                                             />
                                             {product.name}
@@ -193,6 +194,7 @@ export function UpdatePriceForm({ providers}: { providers: Provider[] }) {
                         </Command>
                     </PopoverContent>
                 </Popover>
+                <InputError className="mt-2" message={errors.product_id} />
             </div> 
 
             <div className="flex justify-start gap-4">
