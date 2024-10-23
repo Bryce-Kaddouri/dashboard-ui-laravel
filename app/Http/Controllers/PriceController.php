@@ -71,7 +71,10 @@ class PriceController extends Controller
      */
     public function show(Price $price)
     {
-        //
+        $price = Price::with('provider', 'product')->find($price->id);
+        return Inertia::render('Price/Show', [
+            'price' => $price,
+        ]);
     }
 
     /**
@@ -115,6 +118,7 @@ class PriceController extends Controller
      */
     public function destroy(Price $price)
     {
-        //
+        $price->delete();
+        return redirect()->route('prices.index')->with('success', 'Price deleted successfully');
     }
 }

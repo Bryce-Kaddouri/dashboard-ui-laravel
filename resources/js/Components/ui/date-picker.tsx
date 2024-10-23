@@ -25,9 +25,10 @@ interface DatePickerWithPresetsProps {
     name: string;
     id: string;
     onChange: (value: Date) => void; // Added onChange prop
+    disabled?: boolean;
 }
 
-export function DatePickerWithPresets({ value, name, id, onChange }: DatePickerWithPresetsProps) {
+export function DatePickerWithPresets({ value, name, id, onChange, disabled }: DatePickerWithPresetsProps) {
   // Removed local state for date
   // Use the value prop directly and call onChange when the date changes
   const [open, setOpen] = React.useState(false);
@@ -41,6 +42,7 @@ export function DatePickerWithPresets({ value, name, id, onChange }: DatePickerW
             "w-[280px] justify-start text-left font-normal",
             !value && "text-muted-foreground"
           )}
+          disabled={disabled}
         >
           <CalendarIcon />
           {value ? format(value, "PPP") : <span>Pick a date</span>}
@@ -53,7 +55,7 @@ export function DatePickerWithPresets({ value, name, id, onChange }: DatePickerW
             onChange(newDate); // Call onChange with the new date
           }}
         >
-          <SelectTrigger>
+          <SelectTrigger disabled={disabled}>
             <SelectValue placeholder="Select" />
           </SelectTrigger>
           <SelectContent position="popper">

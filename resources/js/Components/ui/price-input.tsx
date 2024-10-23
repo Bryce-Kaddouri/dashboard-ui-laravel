@@ -10,9 +10,10 @@ interface PriceInputProps {
   name: string;
   id: string;
   onChange: (value: number) => void; // Changed onChange prop to use number
+  disabled?: boolean;
 }
 
-export function PriceInput({ value, min, max, name, id, onChange }: PriceInputProps) {
+export function PriceInput({ value, min, max, name, id, onChange, disabled }: PriceInputProps) {
   // Removed local state for price
   // Regular expression to allow only valid numbers (with optional decimals)
   const priceRegex = /^[0-9]*[.]?[0-9]{0,2}$/;
@@ -41,6 +42,7 @@ export function PriceInput({ value, min, max, name, id, onChange }: PriceInputPr
   return (
     <div className="relative flex items-center">
       <Button
+        disabled={disabled}
         variant="outline"
         onClick={() => handleDecrement(value)} // Pass current value
         className={cn(
@@ -56,8 +58,10 @@ export function PriceInput({ value, min, max, name, id, onChange }: PriceInputPr
         className={cn("text-center font-bold px-12")}
         name={name}
         id={id}
+        disabled={disabled}
       />
       <Button
+        disabled={disabled}
         variant="outline"
         onClick={() => handleIncrement(value)} // Pass current value
         className={cn(
