@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\PriceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -30,6 +31,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('products', ProductController::class);
     Route::resource('prices', PriceController::class);
+    Route::get('/charts/provider', [ChartController::class, 'providerChart'])->name('chart.provider');
+    Route::get('/charts/product', [ChartController::class, 'productChart'])->name('chart.product'); 
 });
 
 

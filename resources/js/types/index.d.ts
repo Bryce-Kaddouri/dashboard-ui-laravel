@@ -43,6 +43,7 @@ export interface Provider {
     address: string;
     updated_at: string;
     products: Product[];
+    prices: Price[];
 }
 
 export interface Product {
@@ -52,6 +53,7 @@ export interface Product {
     image: string;
     updated_at: string;
     providers: Provider[];
+    prices: Price[];
 }
 
 export interface Price {

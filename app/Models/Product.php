@@ -14,4 +14,12 @@ class Product extends Model
     {
         return $this->belongsToMany(Provider::class)->withTimestamps();
     }
+
+    public function prices()
+    {
+        return $this->hasMany(Price::class);
+    }
+
+    
+
 }
