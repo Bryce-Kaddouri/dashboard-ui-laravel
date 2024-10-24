@@ -55,7 +55,8 @@ const links = [
   { href: "/products", label: "Products", icon: <Package className="h-4 w-4" /> },
   { href: "/prices", label: "Prices", icon: <DollarSign className="h-4 w-4" /> },
   { href: "/users", label: "Users", icon: <Users className="h-4 w-4" /> },
-  { href: "/charts", label: "Charts", icon: <BarChart className="h-4 w-4" /> },
+  { href: "/charts/provider", label: "Provider Charts", icon: <BarChart className="h-4 w-4" /> },
+  { href: "/charts/product", label: "Product Charts", icon: <LineChart className="h-4 w-4" /> },
 ];
 
 export function DashboardLayout({pageTitle, children }: { pageTitle: string, children: React.ReactNode }) {

@@ -22,4 +22,9 @@ class Provider extends Model
         return $this->belongsToMany(Product::class)->withTimestamps();
     }
 
+    public function prices()
+    {
+        return $this->hasMany(Price::class);
+    }
+
 }

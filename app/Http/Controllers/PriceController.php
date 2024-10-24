@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PriceCreateRequest;
 use App\Models\Price;
 use App\Models\Provider;
 use Illuminate\Http\RedirectResponse;
@@ -39,9 +40,9 @@ class PriceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PriceCreateRequest $request)
     {
-       
+        $request->validated();
         $request->validate([
             'price' => 'required|numeric|min:0',
             'effective_date' => 'required|date',
