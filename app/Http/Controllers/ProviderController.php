@@ -35,13 +35,22 @@ class ProviderController extends Controller
      */
     public function store(Request $request)
     {
+
+        
         
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:providers,email',
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
+            'color' => 'required|array|size:3',
         ]);
+
+        $color = $request->input('color');
+        $red = $color['r'];
+        $green = $color['g'];
+        $blue = $color['b'];
+        $request->merge(['red' => $red, 'green' => $green, 'blue' => $blue]);
         
         Provider::create($request->all());
         
@@ -79,7 +88,15 @@ class ProviderController extends Controller
             'email' => 'required|email|unique:providers,email,' . $provider->id,
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
+            'color' => 'required|array|size:3',
         ]);
+
+        $color = $request->input('color');
+        $red = $color['r'];
+        $green = $color['g'];
+        $blue = $color['b'];
+        $request->merge(['red' => $red, 'green' => $green, 'blue' => $blue]);
+
         $provider->update($request->all());
         return redirect()->route('providers.index')->with('success', 'Provider updated successfully');
     }

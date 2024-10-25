@@ -12,6 +12,8 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import { Provider } from "@/types";
+import { RgbColor } from "react-colorful";
+import { ColorPicker } from "@/Components/ui/color-picker";
 
 
 export function UpdateProviderForm() {
@@ -22,7 +24,8 @@ export function UpdateProviderForm() {
             name: provider.name,
             email: provider.email,
             phone: provider.phone,
-            address: provider.address
+            address: provider.address,
+            color: { r: provider.red, g: provider.green, b: provider.blue } as RgbColor
         });
 
     const submit: FormEventHandler = (e) => {
@@ -75,6 +78,20 @@ export function UpdateProviderForm() {
                     />
 
                     <InputError className="mt-2" message={errors.phone} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="color" value="Color" />
+                <ColorPicker
+                        className="mt-1 block w-full"
+                        onChange={(v) => {
+                            console.log(v);
+                            setData('color', v);
+                    }}
+                        value={data.color}
+                    />
+
+                    <InputError className="mt-2" message={errors.color} />
                 </div>
 
                  <div>
