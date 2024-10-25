@@ -14,7 +14,7 @@ return new class extends Migration
     {
         // Create the trend_provider_price_by_month view
         DB::statement("
-            CREATE VIEW trend_provider_price_by_month AS 
+            CREATE OR REPLACE VIEW trend_provider_price_by_month AS 
             SELECT 
                 p.provider_id,
                 prov.name as provider_name,
@@ -32,7 +32,7 @@ return new class extends Migration
 
         // Create the trend_provider_price_by_week view
         DB::statement("
-            CREATE VIEW trend_provider_price_by_week AS 
+            CREATE OR REPLACE VIEW trend_provider_price_by_week AS 
             SELECT 
                 p.provider_id,
                 prov.name AS provider_name,

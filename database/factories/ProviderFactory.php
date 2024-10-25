@@ -24,6 +24,9 @@ class ProviderFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
             'address' => $this->faker->address(),
+            'red' => $this->faker->numberBetween(0, 255),
+            'green' => $this->faker->numberBetween(0, 255),
+            'blue' => $this->faker->numberBetween(0, 255),
         ];
     }
 }

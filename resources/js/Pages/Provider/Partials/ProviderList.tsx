@@ -135,6 +135,7 @@ export function ProviderList({ pagination }: { pagination: Pagination<Provider> 
                     <TableHeader>
                       <TableRow>
                         <TableHead>ID</TableHead>
+                        <TableHead>Color</TableHead>
                         <TableHead>Image</TableHead>
                         <TableHead>Name</TableHead>
                         <TableHead>Status</TableHead>
@@ -149,6 +150,9 @@ export function ProviderList({ pagination }: { pagination: Pagination<Provider> 
                         {pagination.data.map((provider) => (
                       <TableRow>
                         <TableCell>{provider.id}</TableCell>
+                        <TableCell>
+                          <div className="w-4 h-4 rounded-full" style={{ backgroundColor: `rgb(${provider.red}, ${provider.green}, ${provider.blue})` }}></div>
+                        </TableCell>
                         <TableCell>
                           <Image
                             alt="Product image"

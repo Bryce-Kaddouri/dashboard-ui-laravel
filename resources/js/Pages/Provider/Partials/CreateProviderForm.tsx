@@ -5,6 +5,7 @@ import { z } from "zod"
 import { Button } from "@/Components/ui/button"
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
+import { RgbColor } from 'react-colorful';
 
 import {
     ChevronLeft,
@@ -22,6 +23,7 @@ import { PhoneInput, getPhoneData } from "@/Components/phone-imput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
+import { ColorPicker } from "@/Components/ui/color-picker";
 
 
  const formSchema = z.object({
@@ -81,7 +83,8 @@ export function CreateProviderForm() {
             name: "",
             email: "",
             phone: "",
-            address: ""
+            address: "",
+            color: { r: 255, g: 0, b: 0 } as RgbColor,
         });
 
     const submit: FormEventHandler = (e) => {
@@ -136,6 +139,19 @@ export function CreateProviderForm() {
                     <InputError className="mt-2" message={errors.phone} />
                 </div>
 
+                <div>
+                    <InputLabel htmlFor="color" value="Color" />
+                <ColorPicker
+                        className="mt-1 block w-full"
+                        onChange={(v) => {
+                            console.log(v);
+                            setData('color', v);
+                    }}
+                        value={data.color}
+                    />
+
+                    <InputError className="mt-2" message={errors.color} />
+                </div>
                  <div>
                     <InputLabel htmlFor="address" value="Address" />
 

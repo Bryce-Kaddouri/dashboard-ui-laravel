@@ -41,6 +41,9 @@ export interface Provider {
     email: string;
     phone: string;
     address: string;
+    red: number;
+    green: number;
+    blue: number;
     updated_at: string;
     products: Product[];
     prices: Price[];

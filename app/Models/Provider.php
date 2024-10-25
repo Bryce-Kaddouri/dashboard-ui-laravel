@@ -15,6 +15,9 @@ class Provider extends Model
         'email',
         'phone',
         'address',
+        'red',
+        'green',
+        'blue',
     ];
 
     public function products()
