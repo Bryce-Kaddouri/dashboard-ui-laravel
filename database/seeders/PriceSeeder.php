@@ -27,12 +27,17 @@ class PriceSeeder extends Seeder
         // Create prices for each product and provider
         foreach ($products as $product) {
             foreach ($providers as $provider) {
+                // add 1 prices per month
+                $year = Carbon::now()->year;
+                for($i = 0; $i < 12; $i++) {
                 Price::create([
                     'product_id' => $product->id,
                     'provider_id' => $provider->id,
-                    'price' => rand(1000, 5000) / 100, // Random price between 10.00 and 50.00
-                    'effective_date' => Carbon::now()->toDateString(), // Current date
-                ]);
+                    // random price between 10.00 and 500.00
+                    'price' => rand(1000, 5000) / 100,
+                    'effective_date' => Carbon::create($year, $i + 1, 8)->toDateString(), // Current date
+                    ]);
+                }
             }
         }
     }
