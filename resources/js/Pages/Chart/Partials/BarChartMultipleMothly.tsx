@@ -31,9 +31,12 @@ export function BarChartMultipleMonthly({ data, providers }: { data: any[], prov
       const chartConfig: ChartConfig = {} satisfies ChartConfig;
 
       for (let i = 0; i < providers.length; i++) {
+        const red: number = providers[i].red;
+        const green: number = providers[i].green;
+        const blue: number = providers[i].blue;
         chartConfig[providers[i].name] = {
             label: providers[i].name,
-            color: "hsl(var(--chart-" + (i + 1) + "))",
+            color: "rgb(" + red + "," + green + "," + blue + ")",
         }
       }
       console.log('chart config')

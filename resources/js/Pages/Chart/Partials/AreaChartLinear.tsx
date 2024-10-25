@@ -54,12 +54,23 @@ export function AreaChartLinear({ data, providers }: { data: any[], providers: P
       const chartConfig: ChartConfig = {} satisfies ChartConfig;
 
       for (let i = 0; i < providers.length; i++) {
+        const red: number = providers[i].red;
+        const green: number = providers[i].green;
+        const blue: number = providers[i].blue;
+        console.log('red')
+        console.log(red)
+        console.log('green')
+        console.log(green)
+        console.log('blue')
+        console.log(blue)
         chartConfig[providers[i].name] = {
             label: providers[i].name,
-            color: "hsl(var(--chart-" + (i + 1) + "))",
+            color: "rgb(" + red + "," + green + "," + blue + ")",
         }
+        console.log('chart config')
+        console.log(chartConfig)
       }
-      console.log('chart config')
+      console.log('chart config from function')
       console.log(chartConfig)
 
 
@@ -112,26 +123,12 @@ export function AreaChartLinear({ data, providers }: { data: any[], providers: P
                 <Area
                     dataKey={provider}
                     type="linear"
-                    fill={`hsl(var(--chart-${index + 1}))`}
+                    fill={chartConfig[provider].color}
                     fillOpacity={0.4}
-                    stroke={`hsl(var(--chart-${index + 1}))`}
+                    stroke={chartConfig[provider].color}
                     stackId="index"
                 />
             ))}
-            {/* <Area
-              dataKey="Gleichner, Hartmann and Baumbach"
-              type="linear"
-              fill="var(--color-1)"
-              fillOpacity={0.4}
-              stroke="var(--color-1)"
-            />
-            <Area
-              dataKey="Gulgowski-Donnelly"
-              type="linear"
-              fill="var(--color-2)"
-              fillOpacity={0.4}
-              stroke="var(--color-2)"
-            /> */}
           </AreaChart>
         </ChartContainer>
       </CardContent>

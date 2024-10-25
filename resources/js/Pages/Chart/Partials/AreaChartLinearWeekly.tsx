@@ -54,9 +54,12 @@ export function AreaChartLinearWeekly({ data, providers }: { data: any[], provid
       const chartConfig: ChartConfig = {} satisfies ChartConfig;
 
       for (let i = 0; i < providers.length; i++) {
+        const red: number = providers[i].red;
+        const green: number = providers[i].green;
+        const blue: number = providers[i].blue;
         chartConfig[providers[i].name] = {
             label: providers[i].name,
-            color: "hsl(var(--chart-" + (i + 1) + "))",
+            color: "rgb(" + red + "," + green + "," + blue + ")",
         }
       }
       console.log('chart config')
@@ -114,9 +117,9 @@ export function AreaChartLinearWeekly({ data, providers }: { data: any[], provid
                 <Area
                     dataKey={provider}
                     type="linear"
-                    fill={`hsl(var(--chart-${index + 1}))`}
+                    fill={chartConfig[provider].color}
                     fillOpacity={0.4}
-                    stroke={`hsl(var(--chart-${index + 1}))`}
+                    stroke={chartConfig[provider].color}
                     stackId="index"
                 />
             ))}
