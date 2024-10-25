@@ -20,7 +20,11 @@ class PriceController extends Controller
      */
     public function index()
     {
-        $prices = Price::with('provider', 'product')->get();
+        $prices = Price::with('provider', 'product')
+            ->orderBy('effective_date', 'desc')
+            ->limit(40) // Adjust the number based on your needs
+            ->get();
+        
         return Inertia::render('Price/Index', [
             'prices' => $prices,
         ]);

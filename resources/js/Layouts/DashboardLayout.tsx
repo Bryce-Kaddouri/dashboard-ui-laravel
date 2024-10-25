@@ -48,6 +48,8 @@ import {
 import NoData from "@/Components/NoData"
 import { usePage } from "@inertiajs/react";
 import { ConfirmLogoutDialog } from "@/Components/ConfirmLogoutDialog";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/Components/ui/sidebar"
+import { AppSidebar } from "@/Components/ui/app-sidebar"
 
 const links = [
   { href: "/dashboard", label: "Dashboard", icon: <Home className="h-4 w-4" /> },
@@ -79,7 +81,18 @@ export function DashboardLayout({pageTitle, children }: { pageTitle: string, chi
 
 
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+
+    <SidebarProvider>
+      <AppSidebar />
+      
+      <SidebarInset>
+    <main className="p-4 w-auto">
+      {children}
+      </main>
+  </SidebarInset>
+    </SidebarProvider>
+  )
+    {/* <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className={`border-r bg-muted/40 transition-width duration-300 ${isCollapsed ? 'w-20' : ''} md:block`}>
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
@@ -187,6 +200,6 @@ export function DashboardLayout({pageTitle, children }: { pageTitle: string, chi
          
         </main>
       </div>
-    </div>
-  )
+    </div> */}
+  
 }
