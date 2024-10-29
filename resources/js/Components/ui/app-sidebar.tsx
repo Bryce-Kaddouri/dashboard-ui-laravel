@@ -18,6 +18,7 @@ import { usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { ConfirmLogoutDialog } from "../ConfirmLogoutDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useForm } from "@inertiajs/react";
 
   const items = [
     { url: "/dashboard", title: "Dashboard", icon:Home  },
@@ -41,12 +42,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
         console.log('logout clicked');
         setIsDialogOpen(true); // Open the confirmation dialog
     };
-  
+
+    const { post } = useForm({
+    });
     const handleConfirmLogout = () => {
-      window.location.href = route('logout'); // Redirect to logout
+      post(route('logout')); // Redirect to logout
     };
     const isMobile = useIsMobile();
-
 
     return (
         <Sidebar variant="floating" collapsible="icon" >

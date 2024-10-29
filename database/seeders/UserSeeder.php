@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleUserEnum;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -13,6 +14,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->count(10)->create(); // Create 10 users using the factory
+        // Create 5 regular users
+        User::factory()->count(5)->state([
+            'role' => RoleUserEnum::ROLE_USER->name
+        ])->create();
+
+        // Create 5 admin users 
+        User::factory()->count(5)->state([
+            'role' => RoleUserEnum::ROLE_ADMIN->name
+        ])->create();
     }
 }
