@@ -19,11 +19,11 @@ interface ConfirmLogoutDialogProps {
 
 export function ConfirmLogoutDialog({ open, onConfirm, onCancel, children }: ConfirmLogoutDialogProps) {
     return (
-        <Dialog open={open} onOpenChange={onCancel}>
+        <Dialog open={open} onOpenChange={onCancel} >
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="rounded-md">
                 <DialogHeader>
                     <DialogTitle>Are you sure you want to logout?</DialogTitle>
                     <DialogDescription>
@@ -31,11 +31,10 @@ export function ConfirmLogoutDialog({ open, onConfirm, onCancel, children }: Con
                     </DialogDescription>
                     
                 </DialogHeader>
-                <DialogFooter> 
+                <DialogFooter className="flex flex-row justify-center gap-2"> 
                     <Button variant="ghost" onClick={onCancel}>Cancel</Button>
-                    <form method="POST" action={route('logout')}>
-                        <Button type="submit" variant="destructive">Confirm</Button>
-                    </form>
+                    <Button type="submit" variant="destructive" onClick={onConfirm}>Confirm</Button>
+                    
                 </DialogFooter>
             </DialogContent>
         </Dialog>
