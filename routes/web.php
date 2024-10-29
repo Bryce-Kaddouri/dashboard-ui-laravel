@@ -5,6 +5,7 @@ use App\Http\Controllers\PriceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('prices', PriceController::class);
     Route::get('/charts/provider', [ChartController::class, 'providerChart'])->name('chart.provider');
     Route::get('/charts/product', [ChartController::class, 'productChart'])->name('chart.product'); 
+
+    Route::resource('users', UserController::class);
 });
 
 
