@@ -17,6 +17,7 @@ import { DropdownMenu, DropdownMenuItem, DropdownMenuLabel } from "./dropdown-me
 import { usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { ConfirmLogoutDialog } from "../ConfirmLogoutDialog";
+import { useIsMobile } from "@/hooks/use-mobile";
 
   const items = [
     { url: "/dashboard", title: "Dashboard", icon:Home  },
@@ -44,6 +45,8 @@ import { ConfirmLogoutDialog } from "../ConfirmLogoutDialog";
     const handleConfirmLogout = () => {
       window.location.href = route('logout'); // Redirect to logout
     };
+    const isMobile = useIsMobile();
+
 
     return (
         <Sidebar variant="floating" collapsible="icon" >
@@ -80,10 +83,11 @@ import { ConfirmLogoutDialog } from "../ConfirmLogoutDialog";
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  side="right"
-                  align="end"
-                  sideOffset={10}
-                  className=" bg-white p-2 rounded-md shadow-md"
+                  side={isMobile ? 'top' : 'right'}
+                  align={isMobile ? 'center' : 'end'}
+                  alignOffset={isMobile ? 0 : 0}
+                  sideOffset={isMobile ? 0 : 14}
+                  className=" bg-white p-2 rounded-md shadow-md w-full"
                 >
                     <DropdownMenuLabel className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">

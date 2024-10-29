@@ -50,6 +50,8 @@ import { usePage } from "@inertiajs/react";
 import { ConfirmLogoutDialog } from "@/Components/ConfirmLogoutDialog";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/Components/ui/sidebar"
 import { AppSidebar } from "@/Components/ui/app-sidebar"
+import { useSidebar } from "@/Components/ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const links = [
   { href: "/dashboard", label: "Dashboard", icon: <Home className="h-4 w-4" /> },
@@ -64,9 +66,9 @@ const links = [
 export function DashboardLayout({pageTitle, children }: { pageTitle: string, children: React.ReactNode }) {
   const currentPath = window.location.pathname; // Get the current path
   const [isCollapsed, setIsCollapsed] = React.useState(false);
-  const toggleSidebar = () => setIsCollapsed(!isCollapsed)
   const user = usePage().props.auth.user;
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const isMobile = useIsMobile();
 
   const handleLogoutClick = (event: React.MouseEvent) => {
     event.preventDefault(); // Prevent the dropdown from closing
@@ -86,7 +88,7 @@ export function DashboardLayout({pageTitle, children }: { pageTitle: string, chi
       <AppSidebar />
       
       <SidebarInset>
-    <main className="p-4 w-auto">
+    <main className={`p-4 w-auto ${isMobile ? 'mt-14' : ''}`}>
       {children}
       </main>
   </SidebarInset>
