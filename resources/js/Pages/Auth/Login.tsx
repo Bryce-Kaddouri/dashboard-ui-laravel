@@ -15,6 +15,7 @@ import { FormEventHandler, useState } from 'react';
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import {
   Alert,
+  AlertClose,
   AlertDescription,
   AlertTitle,
 } from "@/Components/ui/alert";
@@ -66,12 +67,13 @@ export default function Login({
                         </CardDescription>
                     </CardHeader>
                     {errorAlert && (
-                <Alert variant="destructive_dismissible" className="mb-4" isDismissible={true}>
+                <Alert variant="destructive_dismissible" className="mb-4" >
                     <ExclamationTriangleIcon className="h-4 w-4" />
                     <AlertTitle>Error</AlertTitle>
                     <AlertDescription>
                         {errorAlert}
                     </AlertDescription>
+                    <AlertClose />
                 </Alert>
             )}
                     <CardContent>

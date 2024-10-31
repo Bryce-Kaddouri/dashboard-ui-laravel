@@ -3,6 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { ExclamationTriangleIcon, Cross2Icon } from "@radix-ui/react-icons" // Assurez-vous d'importer l'icône de croix
 
 import { cn } from "@/lib/utils"
+import { Button } from "@/Components/ui/button"
 
 const alertVariants = cva(
   "relative w-full rounded-lg border px-4 py-3 text-sm [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg~*]:pl-7",
@@ -16,6 +17,8 @@ const alertVariants = cva(
         active: "border-green-500 text-green-500 dark:border-green-500 [&>svg]:text-green-500",
         warning: "border-yellow-500 text-yellow-500 dark:border-yellow-500 [&>svg]:text-yellow-500",
         error: "border-red-500 text-red-500 dark:border-red-500 [&>svg]:text-red-500",
+        success: "border-green-500 text-green-500 dark:border-green-500 [&>svg]:text-green-500",
+        
       },
     },
     defaultVariants: {
@@ -26,11 +29,8 @@ const alertVariants = cva(
 
 const Alert = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants> & { isDismissible?: boolean }
->(({ className, variant, isDismissible, ...props }, ref) => {
-  const [isVisible, setIsVisible] = React.useState(true);
-
-  if (!isVisible) return null;
+  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants> 
+>(({ className, variant, ...props }, ref) => {
 
   return (
     <div
@@ -39,15 +39,7 @@ const Alert = React.forwardRef<
       className={cn(alertVariants({ variant }), className)}
       {...props}
     >
-      {isDismissible && (
-        <button
-          onClick={() => setIsVisible(false)}
-          className="top-2 right-2 p-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition duration-200"
-          aria-label="Dismiss"
-        >
-          <Cross2Icon className="h-5 w-5" />
-        </button>
-      )}
+      
       {props.children}
     </div>
   );
@@ -78,4 +70,12 @@ const AlertDescription = React.forwardRef<
 ))
 AlertDescription.displayName = "AlertDescription"
 
-export { Alert, AlertTitle, AlertDescription }
+const AlertClose = React.forwardRef<
+  HTMLButtonElement,
+  React.HTMLAttributes<HTMLButtonElement>
+>(({ className, ...props }, ref) => (
+  <Button variant="outline" size="icon" className={cn(className)} {...props} />
+))
+AlertClose.displayName = "AlertClose"
+
+export { Alert, AlertTitle, AlertDescription, AlertClose }

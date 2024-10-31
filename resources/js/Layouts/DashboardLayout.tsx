@@ -52,6 +52,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/Components/ui/s
 import { AppSidebar } from "@/Components/ui/app-sidebar"
 import { useSidebar } from "@/Components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Toaster } from "@/Components/ui/toaster";
 
 const links = [
   { href: "/dashboard", label: "Dashboard", icon: <Home className="h-4 w-4" /> },
@@ -89,6 +90,7 @@ export function DashboardLayout({pageTitle, children }: { pageTitle: string, chi
       
       <SidebarInset>
     <main className={`p-4 w-auto ${isMobile ? 'mt-14' : ''}`}>
+    
       {children}
       </main>
   </SidebarInset>

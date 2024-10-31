@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\RoleUserEnum;
 use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\EditUserRequest;
 use App\Models\User;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
@@ -79,17 +80,49 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(Request $request, User $user)
     {
-        //
+        /** @var User $authenticatedUser */
+        $authenticatedUser = $request->user();
+        if ($authenticatedUser->role !== RoleUserEnum::ROLE_ADMIN->name) {
+            // redirect to the home page
+            return redirect(route(name: 'dashboard', absolute: false));
+        } 
+
+        $roles = RoleUserEnum::getNames();
+        return Inertia::render('User/Edit', [
+            'user' => $user,
+            'roles' => $roles,
+            'status' => session('status'),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(EditUserRequest $request, User $user)
     {
-        //
+        $request->validated();
+        
+        $user->update($request->all());
+        return redirect(route(name: 'users.index', absolute: false));
+    }
+
+    function sendResetPasswordEmail(User $user)
+    {
+        dd($user);
+    }
+
+    function resetPassword(User $user)
+    {
+        return Inertia::render('User/ResetPassword', [
+            'user' => $user,
+        ]);
+    }
+
+    function resetPasswordRequest(User $user)
+    {
+        dd($user);
     }
 
     /**
