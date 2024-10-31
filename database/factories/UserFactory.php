@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\RoleUserEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -25,6 +26,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'password' => Hash::make('password'), // default password
             'remember_token' => Str::random(10),
+            'role' => $this->faker->randomElement(RoleUserEnum::getNames()),
         ];
     }
 }

@@ -69,3 +69,5 @@ export interface Price {
     price: number;
     updated_at: Date;
 }
+
+
