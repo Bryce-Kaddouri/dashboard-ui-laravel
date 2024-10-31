@@ -74,7 +74,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return Inertia::render('User/Show', [
+            'user' => $user,
+            'roles' => RoleUserEnum::getNames(),
+        ]);
     }
 
     /**
@@ -108,28 +111,13 @@ class UserController extends Controller
         return redirect(route(name: 'users.index', absolute: false));
     }
 
-    function sendResetPasswordEmail(User $user)
-    {
-        dd($user);
-    }
-
-    function resetPassword(User $user)
-    {
-        return Inertia::render('User/ResetPassword', [
-            'user' => $user,
-        ]);
-    }
-
-    function resetPasswordRequest(User $user)
-    {
-        dd($user);
-    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect(route(name: 'users.index', absolute: false));
     }
 }
