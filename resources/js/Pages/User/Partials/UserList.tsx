@@ -115,11 +115,11 @@ export function UserList() {
                   </span>
                 </Button>
                 <Button size="sm" className="h-8 gap-1" onClick={() => {
-                  window.location.href = route('prices.create');
+                  window.location.href = route('users.create');
                 }}>
                   <PlusCircle className="h-3.5 w-3.5" />
                   <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Add Price
+                    Add User
                   </span>
                 </Button>
                 
