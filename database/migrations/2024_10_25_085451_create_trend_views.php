@@ -45,7 +45,11 @@ return new class extends Migration
             JOIN 
                 providers prov ON p.provider_id = prov.id
             GROUP BY 
-                p.provider_id, prov.name, week
+                p.provider_id, 
+                prov.name, 
+                week,
+                `from`,
+                `to`
             ORDER BY 
                 p.provider_id, week;
         ");
