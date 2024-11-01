@@ -20,13 +20,73 @@ class PriceController extends Controller
      */
     public function index()
     {
+        // create an array with the query parameters key and the type of the value
+        $query = [
+            'orderBy' => 'string',
+            'direction' => 'string',
+            'pageSize' => 'integer',
+            'page' => 'integer',
+            'search' => 'string',
+        ];
+        $query = request()->query();
+        // check if the query parameters are in the array and if the type is the same as the value
+        foreach($query as $key => $value){
+            if(!in_array($key, array_keys($query)) || !is_string($value)){
+                dd($key, $value);
+            }
+        }
+        
+        // dd($reqs);
+        $orderDirection = 'desc';
+        $orderBy = 'effective_date';
+        $pageSize = 40;
+        $search = '';
+        
+        if(isset($query['pageSize'])){
+            $pageSize = $query['pageSize'];
+        }
+        $page = 0;
+        if(isset($query['page'])){
+            $page = $query['page'];
+        }
+        if(isset($query['orderBy'])){
+            $orderBy = $query['orderBy'];
+        }
+        if(isset($query['direction'])){
+            $orderDirection = $query['direction'];
+        }
+        if(isset($query['search'])){
+            $search = $query['search'];
+            
+        }
+        
         $prices = Price::with('provider', 'product')
-            ->orderBy('effective_date', 'desc')
-            ->limit(40) // Adjust the number based on your needs
-            ->get();
+            // join the product table to get the product name
+            ->join('products', 'prices.product_id', '=', 'products.id')
+            ->join('providers', 'prices.provider_id', '=', 'providers.id')
+            ->select('prices.*', 'products.name as product', 'providers.name as provider')
+            ->where(function($query) use ($search) {
+                $query->where('prices.price', 'like', "%{$search}%")
+                      ->orWhere('prices.id', 'like', "%{$search}%")
+                      ->orWhere('products.name', 'like', "%{$search}%")
+                      ->orWhere('providers.name', 'like', "%{$search}%");
+            })
+            ->orderBy($orderBy, $orderDirection)
+             ->paginate($pageSize, ['*'], 'page', $page); 
+            
+        
+
+
+        
+            
+
+        
+           
+            
         
         return Inertia::render('Price/Index', [
             'prices' => $prices,
+            'query' => $query,
         ]);
     }
 

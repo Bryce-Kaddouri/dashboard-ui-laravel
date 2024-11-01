@@ -34,15 +34,18 @@ import {
 import { Button } from "@/Components/ui/button"
 import { DataTablePagination } from "@/Components/Pagination"
 import { DataTableViewOptions } from "@/Components/ColumnToggle"
+import { Pagination } from "@/types"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  pagination: Pagination<any>
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  pagination,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -126,7 +129,7 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
     </div>
-    <DataTablePagination table={table} />
+    <DataTablePagination pagination={pagination} />
     </div>
   )
 }

@@ -24,6 +24,7 @@ import { DataTableColumnHeader } from "@/Components/ColumnHeader";
 export const columns: ColumnDef<Price>[] = [
   {
     accessorKey: "id",
+    id: "id",
     header: ({ column }) => {
         return (
             <DataTableColumnHeader column={column} title="ID" />
@@ -34,6 +35,7 @@ export const columns: ColumnDef<Price>[] = [
   },
   {
     accessorKey: "price",
+    id: "price",
     header: ({ column }) => {
         return (
             <DataTableColumnHeader column={column} title="Price" />
@@ -43,6 +45,7 @@ export const columns: ColumnDef<Price>[] = [
   },
   {
     accessorKey: "product",
+    id: "product",
     header: ({ column }) => {
         return (
             <DataTableColumnHeader column={column} title="Product" />
@@ -56,6 +59,7 @@ export const columns: ColumnDef<Price>[] = [
   },
   {
     accessorKey: "provider",
+    id: "provider",
     header: ({ column }) => {
         return (
             <DataTableColumnHeader column={column} title="Providers" />
@@ -68,6 +72,7 @@ export const columns: ColumnDef<Price>[] = [
   },
   {
     accessorKey: "effective_date",
+    id: "effective_date",
     header: ({ column }) => {
         return (
             <DataTableColumnHeader column={column} title="Effective Date" />

@@ -15,6 +15,9 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/Components/ui/dropdown-menu"
+
+  import {usePage} from '@inertiajs/react'
+import { PageProps } from "@/types"
   
   interface DataTableColumnHeaderProps<TData, TValue>
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -30,6 +33,23 @@ import {
     if (!column.getCanSort()) {
       return <div className={cn(className)}>{title}</div>
     }
+
+    const props = usePage().props as PageProps;
+    const {query} = props as unknown as {query: Record<string, string>};
+    console.log(props);
+    console.log(query.orderBy, query.direction);
+    const orderBy = query.orderBy;
+    const direction = query.direction;
+    console.log(orderBy, direction);
+
+    function navigate(keys: string[], values: any[]) {
+      // update the url with the new keys and values
+      const url = new URL(window.location.href);
+      keys.forEach((key, index) => {
+        url.searchParams.set(key, values[index]);
+      });
+      window.location.href = url.toString();
+     }
   
     return (
       <div className={cn("flex items-center space-x-2", className)}>
@@ -41,9 +61,9 @@ import {
               className="-ml-3 h-8 data-[state=open]:bg-accent"
             >
               <span>{title}</span>
-              {column.getIsSorted() === "desc" ? (
+              {orderBy === column.id && direction === "desc" ? (
                 <ArrowDownIcon className="ml-2 h-4 w-4" />
-              ) : column.getIsSorted() === "asc" ? (
+              ) : orderBy === column.id && direction === "asc" ? (
                 <ArrowUpIcon className="ml-2 h-4 w-4" />
               ) : (
                 <CaretSortIcon className="ml-2 h-4 w-4" />
@@ -51,18 +71,13 @@ import {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
+            <DropdownMenuItem onClick={() => navigate(["orderBy", "direction"], [column.id, "asc"])}>
               <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
               Asc
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+            <DropdownMenuItem onClick={() => navigate(["orderBy", "direction"], [column.id, "desc"])}>
               <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
               Desc
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-              <EyeNoneIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-              Hide
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

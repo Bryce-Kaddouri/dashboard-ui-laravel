@@ -29,6 +29,7 @@ export interface Pagination<T> {
     prev_page_url: string;
     to: number;
     total: number;
+    query: Record<string, string | number>;
 }
 
 export interface Link {

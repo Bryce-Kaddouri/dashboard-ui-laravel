@@ -20,6 +20,11 @@ class Product extends Model
         return $this->hasMany(Price::class);
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     
 
 }

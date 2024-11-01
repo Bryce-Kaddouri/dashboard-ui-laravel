@@ -68,7 +68,7 @@ import { useState, FormEventHandler } from "react"
 import { useForm } from '@inertiajs/react';
 import { columns } from "../columns"
 import { DataTable } from "../data-table"
-export function PriceList({ prices }: { prices: Price[] }) {
+export function PriceList({ prices }: { prices: Pagination<Price> }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleDeleteClick = (event: React.MouseEvent) => {
     event.preventDefault(); // Prevent the dropdown from closing

@@ -11,8 +11,6 @@ import {
   useReactTable,
   getPaginationRowModel,
   getSortedRowModel,
-
-
 } from "@tanstack/react-table"
 
 import {
@@ -34,16 +32,18 @@ import {
 import { Button } from "@/Components/ui/button"
 import { DataTablePagination } from "@/Components/Pagination"
 import { DataTableViewOptions } from "@/Components/ColumnToggle"
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+import { Pagination, Price } from "@/types"
+import { usePage } from "@inertiajs/react"
+import { SearchIcon } from "lucide-react"
+interface DataTableProps {
+  columns: ColumnDef<Price, any>[]
+  data: Pagination<Price>
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable({
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -51,8 +51,20 @@ export function DataTable<TData, TValue>({
     const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
 
-  const table = useReactTable({
-    data,
+    const query = usePage().props.query as Record<string, string>;
+    const [search, setSearch] = React.useState(query.search || '');
+
+  
+
+  function navigate(key: string, value: any) {
+    // update the url with the new key and value
+    const url = new URL(window.location.href);
+    url.searchParams.set(key, value);
+    window.location.href = url.toString();
+   }
+
+   const table = useReactTable({
+    data: data.data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -70,18 +82,17 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-        <div className="flex items-center py-4">
-        <Input
-          placeholder="Search..."
-          value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("id")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <DataTableViewOptions table={table} />
-
-      </div>
+       <div className="flex w-full max-w-sm items-center space-x-2">
+        <Input value={search} type="text" placeholder="Search..." onChange={(event) => {
+            setSearch(event.target.value);
+          }}/>
+      <Button type="button" size="icon" onClick={() => {
+        navigate("search", search);
+      }}>
+        <SearchIcon className="h-4 w-4" />
+      </Button>
+    </div>
+       
     <div className="rounded-md border">
       <Table>
         <TableHeader>
@@ -101,13 +112,15 @@ export function DataTable<TData, TValue>({
               })}
             </TableRow>
           ))}
+
+          
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -122,11 +135,11 @@ export function DataTable<TData, TValue>({
                 No results.
               </TableCell>
             </TableRow>
-          )}
+          )} 
         </TableBody>
       </Table>
     </div>
-    <DataTablePagination table={table} />
+    <DataTablePagination pagination={data} />
     </div>
   )
 }

@@ -7,12 +7,12 @@ import { Provider, Pagination, Product } from '@/types';
 import { ProductList } from './Partials/ProductList';
 
 
-export default function Index({ products }: { products: Product[] }) {  
+export default function Index({ pagination }: { pagination: Pagination<Product> }) {  
     return (
     
         <DashboardLayout pageTitle="Products">
             
-            <ProductList products={products} />
+            <ProductList pagination={pagination} />
         </DashboardLayout>
     );
 }

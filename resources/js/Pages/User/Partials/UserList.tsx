@@ -67,9 +67,9 @@ import { useForm } from '@inertiajs/react';
 import { columns } from "../columns"
 import { DataTable } from "../data-table"
 import { usePage } from "@inertiajs/react"
-import { User } from "@/types"
+import { Pagination, User } from "@/types"
 export function UserList() {
-  const users = usePage().props.users as User[];
+  const users = usePage().props.users as Pagination<User>;
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleDeleteClick = (event: React.MouseEvent) => {
@@ -134,7 +134,7 @@ export function UserList() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable columns={columns} data={users} />
+                  <DataTable columns={columns} data={users.data} pagination={users} />
                 </CardContent>
               </Card>
             </TabsContent>
