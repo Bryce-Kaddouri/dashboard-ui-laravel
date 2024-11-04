@@ -27,6 +27,8 @@ class PriceController extends Controller
             'pageSize' => 'integer',
             'page' => 'integer',
             'search' => 'string',
+            'price_from' => 'integer',
+            'price_to' => 'integer',
         ];
         $query = request()->query();
         // check if the query parameters are in the array and if the type is the same as the value
@@ -71,8 +73,15 @@ class PriceController extends Controller
                       ->orWhere('products.name', 'like', "%{$search}%")
                       ->orWhere('providers.name', 'like', "%{$search}%");
             })
-            ->orderBy($orderBy, $orderDirection)
-             ->paginate($pageSize, ['*'], 'page', $page); 
+            ->orderBy($orderBy, $orderDirection);
+            if($page > ($prices->count() / $pageSize)){
+                $page = ($prices->count() / $pageSize);
+            }
+             $maxPrice = $prices->max('price'); 
+             $prices = $prices->paginate($pageSize, ['*'], 'page', $page); 
+             
+
+             
             
         
 
@@ -87,6 +96,7 @@ class PriceController extends Controller
         return Inertia::render('Price/Index', [
             'prices' => $prices,
             'query' => $query,
+             'maxPrice' => $maxPrice, 
         ]);
     }
 

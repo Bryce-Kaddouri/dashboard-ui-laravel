@@ -15,6 +15,13 @@ export type PageProps<
     };
 };
 
+export type ColumnType<T> = {
+    id: string;
+    title: string;
+    header: () => React.ReactNode;
+    body: (value: T) => React.ReactNode;
+}
+
 export interface Pagination<T> {
     current_page: number;
     data: T[];
