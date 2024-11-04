@@ -26,8 +26,9 @@ export function DatePickerWithRange({
   onDateChange, // Updated prop name
 }: DatePickerWithRangeProps) {
   const [selectedDate, setSelectedDate] = React.useState<DateRange | undefined>(date);
-
+  const [open, setOpen] = React.useState(false);
   const handleApply = () => {
+    
     onDateChange(selectedDate);
   };
 
@@ -38,7 +39,7 @@ export function DatePickerWithRange({
 
   return (
     <div className={cn("grid gap-2", className)}>
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             id="date"
@@ -69,7 +70,13 @@ export function DatePickerWithRange({
             mode="range"
             defaultMonth={selectedDate?.from}
             selected={selectedDate}
-            onSelect={setSelectedDate} // Update local state on select
+            
+            
+            onSelect={(date) => {
+              setSelectedDate(date);
+              console.log(date);
+              
+            }} // Update local state on select
             numberOfMonths={2}
           />
           <div className="flex justify-end mt-2 p-2">

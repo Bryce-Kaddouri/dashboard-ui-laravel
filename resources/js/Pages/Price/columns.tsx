@@ -26,6 +26,12 @@ import { PriceInput } from "@/Components/ui/price-input";
 import PriceRangePicker from "@/Components/price-range-picker";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
+import { BaseInputNumber } from "@shuriken-ui/react";
+import RangeSlider from "@/Components/range-slider";
+import { DatePickerWithRange } from "@/Components/ui/date-picker-range";
+import { DateRange } from "react-day-picker";
+import { DatePickerWithPresets } from "@/Components/ui/date-picker";
+
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -154,10 +160,12 @@ function navigate(keys: string[], values: any[]) {
   // update the url with the new keys and values
   const url = new URL(window.location.href);
   keys.forEach((key, index) => {
-    url.searchParams.set(key, values[index]);
+    if (values[index] !== null) {
+      url.searchParams.set(key, values[index]);
+    }
   });
   window.location.href = url.toString();
- }
+}
 
 export const customColumns: ColumnType<Price>[] = [
   {
@@ -168,11 +176,9 @@ export const customColumns: ColumnType<Price>[] = [
       const props = usePage().props as PageProps;
     const {query} = props as unknown as {query: Record<string, string>};
     const maxPrice = props.maxPrice as number;
-    console.log(props);
     console.log(query.orderBy, query.direction);
     const orderBy = query.orderBy;
     const direction = query.direction;
-    console.log(orderBy, direction);
       
       return (
         <TableHead>
@@ -205,15 +211,6 @@ export const customColumns: ColumnType<Price>[] = [
               <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
               Desc
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuLabel>Filter</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <div className="flex items-center space-x-2">
-              <PriceInput value={0} min={0} max={maxPrice} name="price_from" id="price_from" onChange={() => {}} />
-              <PriceInput value={maxPrice} min={0} max={maxPrice} name="price_to" id="price_to" onChange={() => {}} />
-
-
-            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -230,14 +227,20 @@ export const customColumns: ColumnType<Price>[] = [
     id: "price",
     title: "Price",
     header: () => {
+      const [value, setValue] = useState<number>(0);
+
 
       const props = usePage().props as PageProps;
     const {query} = props as unknown as {query: Record<string, string>};
-    console.log(props);
+    console.log("query");
     console.log(query.orderBy, query.direction);
     const orderBy = query.orderBy;
     const direction = query.direction;
     console.log(orderBy, direction);
+    const maxPrice = props.maxPrice as number;
+    const [minPriceQuery, setMinPriceQuery] = useState<number>(query.price_from ? parseInt(query.price_from) : 0);
+    const [maxPriceQuery, setMaxPriceQuery] = useState<number>(query.price_to ? parseInt(query.price_to) : maxPrice);
+    
       
       return (
         <TableHead>
@@ -273,11 +276,24 @@ export const customColumns: ColumnType<Price>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Filter</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <div className="flex flex-col w-full gap-2">
-              <Label>Minimum Price</Label>
-              <Input type="number" name="price_from" id="price_from" onChange={() => {}} />
-              <Label>Maximum Price</Label>
-              <Input type="number" name="price_to" id="price_to" onChange={() => {}} />
+            <div className="flex flex-col w-full gap-2 pb-4">              
+              <RangeSlider className="w-full min-w-sm" minValue={0} maxValue={maxPrice} step={maxPrice/10} label="Price Range" defaultValue={[minPriceQuery, maxPriceQuery]} onChange={(value) => {
+                console.log(value);
+                setMinPriceQuery(value[0]);
+                setMaxPriceQuery(value[1]);
+              }} />
+            </div>
+            <div className="flex flex-row justify-end gap-2 py-2">
+              <Button size="sm" variant="outline" onClick={() => {
+               navigate(["price_from", "price_to"], [0, maxPrice]);
+              }}>
+                Reset
+              </Button>
+              <Button size="sm" onClick={() => {
+                navigate(["price_from", "price_to"], [minPriceQuery, maxPriceQuery]);
+              }}>
+                Apply
+              </Button>
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -296,8 +312,6 @@ export const customColumns: ColumnType<Price>[] = [
 
       const props = usePage().props as PageProps;
     const {query} = props as unknown as {query: Record<string, string>};
-    console.log(props);
-    console.log(query.orderBy, query.direction);
     const orderBy = query.orderBy;
     const direction = query.direction;
     console.log(orderBy, direction);
@@ -348,8 +362,6 @@ export const customColumns: ColumnType<Price>[] = [
       
       const props = usePage().props as PageProps;
     const {query} = props as unknown as {query: Record<string, string>};
-    console.log(props);
-    console.log(query.orderBy, query.direction);
     const orderBy = query.orderBy;
     const direction = query.direction;
     console.log(orderBy, direction);
@@ -400,11 +412,16 @@ export const customColumns: ColumnType<Price>[] = [
 
       const props = usePage().props as PageProps;
     const {query} = props as unknown as {query: Record<string, string>};
-    console.log(props);
     console.log(query.orderBy, query.direction);
     const orderBy = query.orderBy;
     const direction = query.direction;
     console.log(orderBy, direction);
+    const minDate = props.minDate as Date;
+    const maxDate = props.maxDate as Date;
+    const [effectiveDateFromQuery, setEffectiveDateFromQuery] = useState<Date>(query.effective_date_from ? new Date(query.effective_date_from) : minDate);
+    const [effectiveDateToQuery, setEffectiveDateToQuery] = useState<Date >(query.effective_date_to ? new Date(query.effective_date_to) : maxDate);
+
+    
       
       return (
         <TableHead>
@@ -427,6 +444,8 @@ export const customColumns: ColumnType<Price>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
+            <DropdownMenuLabel>Sort</DropdownMenuLabel>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => navigate(["orderBy", "direction"], ["effective_date", "asc"])}>
               <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
               Asc
@@ -435,6 +454,29 @@ export const customColumns: ColumnType<Price>[] = [
               <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
               Desc
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Filter</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <div className="grid grid-cols-1 gap-2">              
+              <DatePickerWithPresets minDate={minDate} maxDate={maxDate} value={effectiveDateFromQuery} onChange={setEffectiveDateFromQuery} name="effective_date_from" id="effective_date_from" />
+              <span>to</span>
+              <DatePickerWithPresets minDate={minDate} maxDate={maxDate} value={effectiveDateToQuery} onChange={setEffectiveDateToQuery} name="effective_date_to" id="effective_date_to" />
+            </div>
+            <div className="flex flex-row justify-end gap-2 py-2">
+              <Button size="sm" variant="outline" onClick={() => {
+                navigate(["effective_date_from", "effective_date_to"], [null, null]);
+              }}>
+                Reset
+              </Button>
+              <Button size="sm" onClick={() => {
+                console.log(effectiveDateFromQuery, effectiveDateToQuery);
+                const from = effectiveDateFromQuery?.toISOString().split('T')[0];
+                const to = effectiveDateToQuery?.toISOString().split('T')[0];
+                navigate(["effective_date_from", "effective_date_to"], [from, to]);
+              }}>
+                Apply
+              </Button>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -452,7 +494,6 @@ export const customColumns: ColumnType<Price>[] = [
 
       const props = usePage().props as PageProps;
     const {query} = props as unknown as {query: Record<string, string>};
-    console.log(props);
     console.log(query.orderBy, query.direction);
     const orderBy = query.orderBy;
     const direction = query.direction;

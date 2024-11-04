@@ -29,6 +29,8 @@ class PriceController extends Controller
             'search' => 'string',
             'price_from' => 'integer',
             'price_to' => 'integer',
+            'effective_date_from' => 'date',
+            'effective_date_to' => 'date',
         ];
         $query = request()->query();
         // check if the query parameters are in the array and if the type is the same as the value
@@ -61,6 +63,8 @@ class PriceController extends Controller
             $search = $query['search'];
             
         }
+
+        
         
         $prices = Price::with('provider', 'product')
             // join the product table to get the product name
@@ -77,7 +81,15 @@ class PriceController extends Controller
             if($page > ($prices->count() / $pageSize)){
                 $page = ($prices->count() / $pageSize);
             }
+            $minDate = $prices->min('effective_date');
+            $maxDate = $prices->max('effective_date');
              $maxPrice = $prices->max('price'); 
+             if(isset($query['price_from']) || isset($query['price_to'])){
+                $prices = $prices->where('price', '>=', $query['price_from'])->where('price', '<=', $query['price_to']);
+            }
+            if(isset($query['effective_date_from']) || isset($query['effective_date_to'])){
+                $prices = $prices->where('effective_date', '>=', $query['effective_date_from'])->where('effective_date', '<=', $query['effective_date_to']);
+            }
              $prices = $prices->paginate($pageSize, ['*'], 'page', $page); 
              
 
@@ -97,6 +109,8 @@ class PriceController extends Controller
             'prices' => $prices,
             'query' => $query,
              'maxPrice' => $maxPrice, 
+             'minDate' => $minDate,
+             'maxDate' => $maxDate,
         ]);
     }
 

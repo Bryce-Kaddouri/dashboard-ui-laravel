@@ -39,6 +39,7 @@ import {
 } from "@/Components/ui/dropdown-menu"
 import { Input } from "@/Components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/Components/ui/sheet"
+import {NextUIProvider} from "@nextui-org/system";
 
 import {
     Tooltip,
@@ -84,7 +85,7 @@ export function DashboardLayout({pageTitle, children }: { pageTitle: string, chi
 
 
   return (
-
+<NextUIProvider>
     <SidebarProvider>
       <AppSidebar />
       
@@ -95,6 +96,7 @@ export function DashboardLayout({pageTitle, children }: { pageTitle: string, chi
       </main>
   </SidebarInset>
     </SidebarProvider>
+    </NextUIProvider>
   )
     {/* <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className={`border-r bg-muted/40 transition-width duration-300 ${isCollapsed ? 'w-20' : ''} md:block`}>

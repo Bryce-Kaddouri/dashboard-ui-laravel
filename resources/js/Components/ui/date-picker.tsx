@@ -21,14 +21,16 @@ import {
 } from "@/Components/ui/select"
 
 interface DatePickerWithPresetsProps {
-    value: Date;
+    value: Date ;
     name: string;
     id: string;
     onChange: (value: Date) => void; // Added onChange prop
     disabled?: boolean;
+    minDate?: Date;
+    maxDate?: Date;
 }
 
-export function DatePickerWithPresets({ value, name, id, onChange, disabled }: DatePickerWithPresetsProps) {
+export function DatePickerWithPresets({ value, name, id, onChange, disabled, minDate, maxDate }: DatePickerWithPresetsProps) {
   // Removed local state for date
   // Use the value prop directly and call onChange when the date changes
   const [open, setOpen] = React.useState(false);
